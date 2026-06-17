@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
+    "calculateExercises": "tsc && node --experimental-strip-types exerciseCalculator.ts",
     "calculateBmi": "tsc && node --experimental-strip-types bmiCalculator.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
