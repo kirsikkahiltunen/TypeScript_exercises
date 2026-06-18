@@ -42,4 +42,8 @@ const calculateExercises = (
     average,
   }
 }
-console.log(calculateExercises([0, 1, 3, 2, 1, 0, 4], 3))
+
+const a: number = Number(process.argv[2])
+const b: number[] = process.argv.slice(3).map(Number)
+
+console.log(calculateExercises(b, a))
