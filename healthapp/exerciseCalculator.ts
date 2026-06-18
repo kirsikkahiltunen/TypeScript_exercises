@@ -42,8 +42,34 @@ const calculateExercises = (
     average,
   }
 }
+interface inputValues2 {
+  a: number
+  b: number[]
+}
 
-const a: number = Number(process.argv[2])
-const b: number[] = process.argv.slice(3).map(Number)
-
-console.log(calculateExercises(b, a))
+const validInput2 = (args: string[]): inputValues2 => {
+  if (
+    !isNaN(Number(args[2])) &&
+    args
+      .slice(3)
+      .map(Number)
+      .every((n) => !isNaN(n))
+  ) {
+    return {
+      a: Number(args[2]),
+      b: args.slice(3).map(Number),
+    }
+  } else {
+    throw new Error("Values must be numbers")
+  }
+}
+try {
+  const { a, b } = validInput2(process.argv)
+  console.log(calculateExercises(b, a))
+} catch (error: unknown) {
+  let errorMessage = "Something failed"
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message
+  }
+  console.log(errorMessage)
+}

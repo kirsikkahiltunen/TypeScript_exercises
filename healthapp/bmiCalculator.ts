@@ -1,4 +1,4 @@
-const calculateBmi = (height: number, weight: number) => {
+const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2
   if (bmi < 18.5) {
     return "underweight"
@@ -11,6 +11,28 @@ const calculateBmi = (height: number, weight: number) => {
   }
   return "Normal range"
 }
-const height: number = Number(process.argv[2])
-const weight: number = Number(process.argv[3])
-console.log(calculateBmi(height, weight))
+interface inputValues {
+  height: number
+  weight: number
+}
+
+const validInput = (args: string[]): inputValues => {
+  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+    return {
+      height: Number(args[2]),
+      weight: Number(args[3]),
+    }
+  } else {
+    throw new Error("Values must be numbers")
+  }
+}
+try {
+  const { height, weight } = validInput(process.argv)
+  console.log(calculateBmi(height, weight))
+} catch (error: unknown) {
+  let errorMessage = "Something failed"
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message
+  }
+  console.log(errorMessage)
+}
