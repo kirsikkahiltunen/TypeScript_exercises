@@ -1,4 +1,4 @@
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2
   if (bmi < 18.5) {
     return "underweight"
@@ -26,13 +26,15 @@ const validInput = (args: string[]): inputValues => {
     throw new Error("Values must be numbers")
   }
 }
-try {
-  const { height, weight } = validInput(process.argv)
-  console.log(calculateBmi(height, weight))
-} catch (error: unknown) {
-  let errorMessage = "Something failed"
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message
+if (process.argv[1] === import.meta.filename) {
+  try {
+    const { height, weight } = validInput(process.argv)
+    console.log(calculateBmi(height, weight))
+  } catch (error: unknown) {
+    let errorMessage = "Something failed"
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message
+    }
+    console.log(errorMessage)
   }
-  console.log(errorMessage)
 }
