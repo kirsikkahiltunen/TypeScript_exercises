@@ -8,8 +8,8 @@
     "calculateExercises": "tsc && node --experimental-strip-types exerciseCalculator.ts",
     "calculateBmi": "tsc && node --experimental-strip-types bmiCalculator.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node --experimental-strip-types index.ts",
-    "dev": "tsc && node --experimental-strip-types --watch index.ts"
+    "start": "node --experimental-strip-types index.ts",
+    "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-strip-types index.ts\""
   },
   "author": "",
   "license": "ISC",
