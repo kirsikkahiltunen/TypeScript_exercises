@@ -7,13 +7,19 @@
     "tsc": "tsc",
     "calculateExercises": "tsc && node --experimental-strip-types exerciseCalculator.ts",
     "calculateBmi": "tsc && node --experimental-strip-types bmiCalculator.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node --experimental-strip-types index.ts",
+    "dev": "tsc && node --experimental-strip-types --watch index.ts"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.9.3",
     "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
