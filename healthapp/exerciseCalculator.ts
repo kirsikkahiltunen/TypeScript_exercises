@@ -8,7 +8,7 @@ interface ExerciseCalculations {
   average: number
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   exercises: number[],
   target: number,
 ): ExerciseCalculations => {
@@ -63,13 +63,15 @@ const validInput2 = (args: string[]): inputValues2 => {
     throw new Error("Values must be numbers");
   }
 };
-try {
-  const { a, b } = validInput2(process.argv);
-  console.log(calculateExercises(b, a));
-} catch (error: unknown) {
-  let errorMessage = "Something failed";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+if (process.argv[1] === import.meta.filename) {
+  try {
+    const { a, b } = validInput2(process.argv);
+    console.log(calculateExercises(b, a));
+  } catch (error: unknown) {
+    let errorMessage = "Something failed";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
