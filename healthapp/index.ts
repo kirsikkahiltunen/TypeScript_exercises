@@ -26,9 +26,9 @@ app.get("/bmi", (req, res) => {
 });
 
 app.post("/exercises", (req, res) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
   const exercises = req.body.daily_exercises;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
   const target = req.body.target;
 
   if (!exercises || !target) {
