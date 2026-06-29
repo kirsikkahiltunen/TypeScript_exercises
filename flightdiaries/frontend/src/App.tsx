@@ -1,6 +1,13 @@
-import axios from 'axios';
+import axios, { AxiosError }from 'axios';
 import type { Diary } from './types';
 import React, { useEffect, useState } from 'react';
+
+const Notify = ({message}: { message: string }) => {
+  if (!message) return null;
+  return (
+    <p style={{ color: 'red' }}>{message}</p>
+  )
+};
 
 const App = () => {
   const [diaries, setDiaries] = useState<Diary[]>([]);
@@ -16,11 +23,11 @@ const App = () => {
     })
   }, [])
 
-  const errorParser =  (error: any): string => {
+  const errorParser =  (error: AxiosError): string => {
     const data = error.response.data;
 
     if (data.error && Array.isArray(data.error)){
-      return data.error.map((e: any) => e.message).join(',');
+      return data.error.map((e) => e.message).join(',');
     }
     else{
       return 'Something went wrong'
@@ -52,13 +59,6 @@ const App = () => {
     setComment('')
   };
 
-  const Notify = ({message}: { message: string }) => {
-    if (!message) return null;
-    return (
-      <p style={{ color: 'red' }}>{message}</p>
-    )
-  };
-
   return (
     <div>
       <h1>Flight diaries</h1>
@@ -72,20 +72,79 @@ const App = () => {
         <div>
           date:
           <input
+           type='date'
            value={newDate}
            onChange={({ target }) => setNewDate(target.value)}/>
         </div>
         <div>
           weather: 
           <input
-           value={weather}
+           type='radio'
+           name={weather}
+           value='sunny'
+           id='1sunny'
            onChange={({ target }) => setWeather(target.value)}/>
+           <label for='1sunny'>sunny </label>
+           <input
+           type='radio'
+           name={weather}
+           value='rainy'
+           id='2rainy'
+           onChange={({ target }) => setWeather(target.value)}/>
+           <label for='2rainy'>rainy </label>
+           <input
+           type='radio'
+           name={weather}
+           value='cloudy'
+           id='3cloudy'
+           onChange={({ target }) => setWeather(target.value)}/>
+           <label for='3cloudy'>cloudy </label>
+           <input
+           type='radio'
+           name={weather}
+           value='stormy'
+           id='4stormy'
+           onChange={({ target }) => setWeather(target.value)}/>
+           <label for='4stormy'>stormy</label>
+           <input
+           type='radio'
+           name={weather}
+           value='windy'
+           id='4windy'
+           onChange={({ target }) => setWeather(target.value)}/>
+           <label for='4windy'>windy</label>
         </div> 
         <div>
           visibility: 
+          
           <input
-           value={visibility}
+           type='radio'
+           name={visibility}
+           value='great'
+           id='1great'
            onChange={({ target }) => setVisibility(target.value)}/>
+           <label for='1great'>great </label>
+           <input
+           type='radio'
+           name={visibility}
+           value='good'
+           id='2good'
+           onChange={({ target }) => setVisibility(target.value)}/>
+           <label for='2good'>good </label>
+           <input
+           type='radio'
+           name={visibility}
+           value='ok'
+           id='3ok'
+           onChange={({ target }) => setVisibility(target.value)}/>
+           <label for='3ok'>ok </label>
+           <input
+           type='radio'
+           name={visibility}
+           value='poor'
+           id='4poor'
+           onChange={({ target }) => setVisibility(target.value)}/>
+           <label for='4poor'>poor</label>
         </div>
         <div>
           comment: 
