@@ -8,8 +8,8 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-strip-types index.ts\"",
-    "start": "node --experimental-strip-types index.ts",
+    "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-strip-types src/index.ts\"",
+    "start": "node --experimental-strip-types src/index.ts",
     "lint": "eslint ."
   },
   "dependencies": {
