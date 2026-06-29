@@ -8,6 +8,7 @@ const App = () => {
   const [weather, setWeather] = useState('')
   const [visibility, setVisibility] = useState('')
   const [comment, setComment] = useState('')
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     axios.get<Diary[]>('http://localhost:3000/api/diaries').then(response => {
@@ -15,10 +16,20 @@ const App = () => {
     })
   }, [])
 
+  const errorParser =  (error: any): string => {
+    const data = error.response.data;
+
+    if (data.error && Array.isArray(data.error)){
+      return data.error.map((e: any) => e.message).join(',');
+    }
+    else{
+      return 'Something went wrong'
+    }
+  }
+
   const createEntry = (event: React.SyntheticEvent) => {
     event.preventDefault()
     const entryToAdd = {
-      id: String(diaries.length + 1),
       date: newDate,
       weather: weather,
       visibility: visibility,
@@ -27,15 +38,31 @@ const App = () => {
     axios.post<Diary>('http://localhost:3000/api/diaries', entryToAdd).then(response => {
       setDiaries(diaries.concat(response.data))
     })
+    .catch(error => {
+      const newMessage = errorParser(error)
+      
+      setMessage(newMessage);
+      setTimeout(() => {
+      setMessage('');
+    }, 10000);
+    });
     setNewDate('')
     setWeather('')
     setVisibility('')
     setComment('')
   };
 
+  const Notify = ({message}: { message: string }) => {
+    if (!message) return null;
+    return (
+      <p style={{ color: 'red' }}>{message}</p>
+    )
+  };
+
   return (
     <div>
       <h1>Flight diaries</h1>
+      <Notify message={message}/>
       <ul>
         {diaries.map(diary => 
           <li key={diary.id}> <b>{diary.date}</b> weather: {diary.weather}, visibility: {diary.visibility} </li>
