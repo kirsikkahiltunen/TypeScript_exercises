@@ -1,6 +1,6 @@
 import { useState, SyntheticEvent } from "react";
 
-import {  TextField, Grid, Button } from '@mui/material';
+import {  TextField, Grid, Button, SelectChangeEvent, InputLabel, Select, MenuItem  } from '@mui/material';
 
 import { Entry } from "../../types";
 
@@ -9,6 +9,7 @@ interface Props {
   onSubmit: (values: Entry) => void;
 }
 
+const entryTypes = ["HealthCheck", "Hospital", "OccupationalHealthcare"];
 
 const EntryForm = ({ onCancel, onSubmit }: Props) => {
     const [newDate, setNewDate] = useState('');
@@ -16,22 +17,73 @@ const EntryForm = ({ onCancel, onSubmit }: Props) => {
     const [newSpecialist, setNewSpecialist] = useState('');
     const [newRating, setNewRating] = useState('');
     const [newCodes, setNewCodes] = useState('');
+    const [newType, setNewType] = useState<Entry["type"] | "">('HealthCheck');
+    const [discharge, setDischarge] = useState('');
+    const [criteria, setCriteria] = useState('');
+    const [employer, setEmployer] = useState('');
+    const [start, setStart] = useState('');
+    const [end, setEnd] = useState('');
+
+
+  const onTypeChange = (event: SelectChangeEvent) => {
+      setNewType(event.target.value as string);
+    };
 
   const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
-    onSubmit({
+
+    const entryValues = {
       date: newDate,
       description: newDescription,
       specialist: newSpecialist,
+      diagnosisCodes: newCodes.split(',').map(code => code.trim())
+    };
+    if (newType === "HealthCheck"){
+    onSubmit({
+      ...entryValues,
       healthCheckRating: Number(newRating),
-      diagnosisCodes: newCodes.split(',').map(code => code.trim()),
-      type: "HealthCheck"
+      type: newType
+    });
+  } else if (newType === "Hospital") {
+      onSubmit({
+        ...entryValues,
+        type: newType,
+        discharge: {
+          date: discharge,
+          criteria: criteria
+        }
+      });
+  }else if (newType === "OccupationalHealthcare") {
+      onSubmit({
+      ...entryValues,
+      employerName: employer,
+      sickLeave:{
+        startDate: startDate,
+        endDate: endDate 
+      },
+      type: newType
     });
   };
+ };
 
   return (
     <div>
       <form onSubmit={addEntry}>
+        <InputLabel sx={{ marginTop: 2.5 }}>Entry type</InputLabel>
+        <Select
+          label="entryType"
+          fullWidth
+          value={newType}
+          onChange={onTypeChange}
+        >
+        {entryTypes.map(option =>
+          <MenuItem
+            key={option}
+            value={option}
+          >
+            {option}</MenuItem>
+        )}
+        </Select>
         <TextField
           label="Date"
           placeholder="YYYY-MM-DD"
@@ -51,12 +103,52 @@ const EntryForm = ({ onCancel, onSubmit }: Props) => {
           value={newSpecialist}
           onChange={({ target }) => setNewSpecialist(target.value)}
         />
+        {newType === "HealthCheck" && (
         <TextField
           label="Health Check rating (0-3)"
           fullWidth
           value={newRating}
           onChange={({ target }) => setNewRating(target.value)}
         />
+        )}
+        {newType === "Hospital" && (
+        <>
+        <TextField
+          label="Discharge date"
+          fullWidth
+          value={discharge}
+          onChange={({ target }) => setDischarge(target.value)}
+        />
+         <TextField
+          label="Discharge criteria"
+          fullWidth
+          value={criteria}
+          onChange={({ target }) => setCriteria(target.value)}
+        />
+        </>
+        )}
+        {newType === "OccupationalHealthcare" && (
+        <>
+        <TextField
+          label="Employer name"
+          fullWidth
+          value={employer}
+          onChange={({ target }) => setEmployer(target.value)}
+        />
+         <TextField
+          label="Sick leave start"
+          fullWidth
+          value={start}
+          onChange={({ target }) => setStart(target.value)}
+        />
+        <TextField
+          label="Sick leave end"
+          fullWidth
+          value={end}
+          onChange={({ target }) => setEnd(target.value)}
+        />
+        </>
+        )}
         <TextField
           label="Diagnosis Codes (comma-separated)"
           fullWidth
@@ -89,5 +181,4 @@ const EntryForm = ({ onCancel, onSubmit }: Props) => {
     </div>
   );
 };
-
 export default EntryForm;

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import axios, {AxiosError} from 'axios';
+import axios from 'axios';
 import patientService from "../services/patients";
 import { Patient, Entry, Diagnosis } from "../types";
 import { useEffect, useState } from "react";
@@ -76,7 +76,14 @@ const PatientPage = () => {
                 <ul>
                     {entries.map(entry =>
                         <li key={entry.id}>
-                            <div>{entry.date} {entry.description}</div>
+                            <div>{entry.date} {entry.description}
+                            {entry.type == 'HealthCheck' && 
+                            (<p><b>health check rating: </b>{entry.healthCheckRating}</p>)} 
+                            {entry.type === 'Hospital' && 
+                            (<p><b>discharge day:</b> {entry.discharge.date} <b>discharge criteria:</b> {entry.discharge.criteria}</p>)}
+                            {entry.type === 'OccupationalHealthcare' && 
+                            (<p> <b>Sick leave:</b> {entry.sickLeave.startDate} - {entry.sickLeave.endDate} </p>)}
+                            </div>
                             <ul>
                             {entry.diagnosisCodes?.map(code => {
                                 const diagnosis = diagnoses.find(d => d.code === code);
