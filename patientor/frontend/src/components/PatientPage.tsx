@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom"
-import patientService from "../services/patients"
-import { Patient } from "../types"
+import { useParams } from "react-router-dom";
+import patientService from "../services/patients";
+import { Patient } from "../types";
 import { useEffect, useState } from "react";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
@@ -14,9 +14,9 @@ const PatientPage = () => {
         const findPatient = async () => {
             if (id) {
                 const data = await patientService.findById(id);
-                setPatient(data)
+                setPatient(data);
             }
-        }
+        };
         void findPatient();
     }, [id]);
 
@@ -28,10 +28,10 @@ const PatientPage = () => {
                 <p> occupation: {patient.occupation} </p>
                 <p> date of birth: {patient.dateOfBirth} </p>
             </div>
-        )
+        );
     } else {
-        return null
+        return null;
     }
-}
+};
 
 export default PatientPage;

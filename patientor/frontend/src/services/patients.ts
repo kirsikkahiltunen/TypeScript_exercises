@@ -25,7 +25,7 @@ const findById = async (id: id) => {
     `${apiBaseUrl}/patients/${id}`,
   );
   return data;
-}
+};
 
 export default {
   getAll, create, findById
