@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { string, z } from 'zod';
 
 export interface Diagnosis{
     code: string;
@@ -7,6 +7,16 @@ export interface Diagnosis{
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface Entry{
+}
+
+export type Entry =  | HospitalEntry | OccupationalHealthcareEntry;
+
+interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
 export interface Patient{
@@ -38,3 +48,29 @@ export const NewPatientSchema = z.object({
     gender: z.enum(Gender),
     occupation: z.string()
 });
+
+const Discharge = {
+    date: string,
+    criteria: string
+}
+
+type Discharge = typeof Discharge[keyof typeof Discharge]
+
+interface HospitalEntry extends BaseEntry {
+    type: "Hospital";
+    description: string;
+    discharge: Discharge;
+}
+
+const SickLeave = {
+    startDate: string,
+    endDate: string
+}
+
+type SickLeave = typeof SickLeave[keyof typeof SickLeave]
+
+interface OccupationalHealthcareEntry extends BaseEntry{
+    type: "OccupationalHealthcare";
+    description: string;
+    sickLeave: SickLeave;
+}
