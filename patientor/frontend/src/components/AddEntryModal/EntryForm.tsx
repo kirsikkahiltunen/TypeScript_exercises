@@ -2,11 +2,11 @@ import { useState, SyntheticEvent } from "react";
 
 import {  TextField, Grid, Button, SelectChangeEvent, InputLabel, Select, MenuItem  } from '@mui/material';
 
-import { Entry } from "../../types";
+import { NewEntry, Entry, HealthCheckRating } from "../../types";
 
 interface Props {
   onCancel: () => void;
-  onSubmit: (values: Entry) => void;
+  onSubmit: (values: NewEntry) => void;
 }
 
 const entryTypes = ["HealthCheck", "Hospital", "OccupationalHealthcare"];
@@ -26,7 +26,7 @@ const EntryForm = ({ onCancel, onSubmit }: Props) => {
 
 
   const onTypeChange = (event: SelectChangeEvent) => {
-      setNewType(event.target.value as string);
+      setNewType(event.target.value as Entry["type"]);
     };
 
   const addEntry = (event: SyntheticEvent) => {
@@ -41,13 +41,13 @@ const EntryForm = ({ onCancel, onSubmit }: Props) => {
     if (newType === "HealthCheck"){
     onSubmit({
       ...entryValues,
-      healthCheckRating: Number(newRating),
-      type: newType
+      healthCheckRating: Number(newRating) as HealthCheckRating,
+      type: "HealthCheck"
     });
   } else if (newType === "Hospital") {
       onSubmit({
         ...entryValues,
-        type: newType,
+        type: "Hospital",
         discharge: {
           date: discharge,
           criteria: criteria
@@ -58,10 +58,10 @@ const EntryForm = ({ onCancel, onSubmit }: Props) => {
       ...entryValues,
       employerName: employer,
       sickLeave:{
-        startDate: startDate,
-        endDate: endDate 
+        startDate: start,
+        endDate: end
       },
-      type: newType
+      type: "OccupationalHealthcare"
     });
   };
  };

@@ -23,6 +23,7 @@ export interface Patient {
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 
 export type Entry =  | HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
+export type NewEntry = Omit<Entry, "id">;
 
 interface BaseEntry {
   id: string;
@@ -39,7 +40,6 @@ interface Discharge {
 
 interface HospitalEntry extends BaseEntry {
     type: "Hospital";
-    description: string;
     discharge: Discharge;
 }
 
@@ -50,8 +50,8 @@ interface SickLeave {
 
 interface OccupationalHealthcareEntry extends BaseEntry{
     type: "OccupationalHealthcare";
-    description: string;
-    sickLeave: SickLeave;
+    employerName: string;
+    sickLeave?: SickLeave;
 }
 
 const HealthCheckRating = {
@@ -61,15 +61,9 @@ const HealthCheckRating = {
   CriticalRisk: 3,
 } as const;
 
-type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
+export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
-}
-
-export enum EntryType {
-  HealthCheck = "HealthCheck",
-  OccupationalHealthcare = "OccupationalHealthcare",
-  Hospital = "Hospital"
 }
