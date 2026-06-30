@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import patientService from "../services/patients";
-import { Patient, Entry, Diagnosis } from "../types";
+import { Patient, Entry, NewEntry, Diagnosis } from "../types";
 import { useEffect, useState } from "react";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
@@ -44,7 +44,7 @@ const PatientPage = () => {
         setError(undefined);
     };
 
-  const createEntry = async (id: string, values: Entry) => {
+  const createEntry = async (id: string, values: NewEntry) => {
       try {
         const entry = await patientService.addEntry(id, values);
         setEntries(entries.concat(entry));
