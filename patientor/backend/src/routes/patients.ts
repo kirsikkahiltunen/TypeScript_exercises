@@ -1,6 +1,6 @@
 import express from 'express';
 import patientService from '../services/patientService.ts';
-import { NewPatientSchema } from '../types.ts';
+import { NewPatientSchema, NewHealthCheckEntrySchema, NewHospitalEntrySchema, NewOccupationalHealthcareEntrySchema } from '../types.ts';
 import { z } from 'zod';
 
 const router = express.Router();
@@ -30,6 +30,35 @@ router.get('/:id', (req, res) => {
         res.send(data);
     } else {
         res.sendStatus(404);
+    }
+});
+
+router.post('/:id/entries', (req, res) => {
+    const patientId =req.params.id;
+    const patient = patientService.findById(patientId);
+    if (patient) {
+        const body = req.body as { type: string };
+        switch (body.type) {
+            case 'Hospital': {
+                const newEntry = NewHospitalEntrySchema.parse(body);
+                const addedEntry = patientService.addEntry(patientId, newEntry);
+                return res.json(addedEntry);
+            }
+            case 'OccupationalHealthcare': {
+                const newEntry = NewOccupationalHealthcareEntrySchema.parse(body);
+                const addedEntry = patientService.addEntry(patientId, newEntry);
+                return res.json(addedEntry);
+            }
+            case 'HealthCheck': {
+                const NewEntry = NewHealthCheckEntrySchema.parse(req.body);
+                const addedEntry = patientService.addEntry(patientId, NewEntry);
+                return res.json(addedEntry);
+            }
+            default:
+                return res.sendStatus(400);
+        }
+    } else {
+        return res.sendStatus(404);
     }
 });
 

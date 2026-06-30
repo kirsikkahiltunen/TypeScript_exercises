@@ -1,4 +1,4 @@
-import { string, z } from 'zod';
+import { z } from 'zod';
 
 export interface Diagnosis{
     code: string;
@@ -7,7 +7,7 @@ export interface Diagnosis{
 }
 
 
-export type Entry =  | HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
+export type Entry =  HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
 interface BaseEntry {
   id: string;
@@ -22,7 +22,7 @@ export interface Patient{
     name: string;
     dateOfBirth: string;
     ssn: string;
-    gender: string;
+    gender: Gender;
     occupation: string;
     entries: Entry[];
 }
@@ -47,29 +47,48 @@ export const NewPatientSchema = z.object({
     occupation: z.string()
 });
 
-const Discharge = {
-    date: string,
-    criteria: string
-};
+const DischargeSchema = z.object({
+    date: z.string(),
+    criteria: z.string()
+});
 
-type Discharge = typeof Discharge[keyof typeof Discharge];
+type Discharge = z.infer<typeof DischargeSchema>;
+
+const SickLeaveSchema = z.object({
+    startDate: z.string(),
+    endDate: z.string()
+});
+
+type SickLeave = z.infer<typeof SickLeaveSchema>;
+
+export const NewHospitalEntrySchema = z.object({
+    id: z.string(),
+    description: z.string(),
+    date: z.string(),
+    specialist: z.string(),
+    diagnosisCodes: z.array(z.string()).optional(),
+    type: z.literal("Hospital"),
+    discharge: DischargeSchema,
+});
 
 interface HospitalEntry extends BaseEntry {
     type: "Hospital";
-    description: string;
     discharge: Discharge;
 }
 
-const SickLeave = {
-    startDate: string,
-    endDate: string
-};
-
-type SickLeave = typeof SickLeave[keyof typeof SickLeave];
+export const NewOccupationalHealthcareEntrySchema = z.object({
+    id: z.string(),
+    description: z.string(),
+    date: z.string(),
+    specialist: z.string(),
+    diagnosisCodes: z.array(z.string()).optional(),
+    type: z.literal("OccupationalHealthcare"),
+    employerName: z.string(),
+    sickLeave: SickLeaveSchema.optional()
+});
 
 interface OccupationalHealthcareEntry extends BaseEntry{
     type: "OccupationalHealthcare";
-    description: string;
     employerName: string;
     sickLeave?: SickLeave;
 }
@@ -81,7 +100,24 @@ const HealthCheckRating = {
   CriticalRisk: 3,
 } as const;
 
+const HealthCheckRatingSchema = z.union([
+    z.literal(HealthCheckRating.Healthy),
+    z.literal(HealthCheckRating.LowRisk),
+    z.literal(HealthCheckRating.HighRisk),
+    z.literal(HealthCheckRating.CriticalRisk),
+]);
+
 type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
+
+export const NewHealthCheckEntrySchema = z.object({
+    id: z.string(),
+    description: z.string(),
+    date: z.string(),
+    specialist: z.string(),
+    diagnosisCodes: z.array(z.string()).optional(),
+    type: z.literal("HealthCheck"),
+    healthCheckRating: HealthCheckRatingSchema
+});
 
 interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
