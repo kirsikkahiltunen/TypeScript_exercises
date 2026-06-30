@@ -82,7 +82,7 @@ const PatientPage = () => {
                             {entry.type === 'Hospital' && 
                             (<p><b>discharge day:</b> {entry.discharge.date} <b>discharge criteria:</b> {entry.discharge.criteria}</p>)}
                             {entry.type === 'OccupationalHealthcare' && 
-                            (<p> <b>Sick leave:</b> {entry.sickLeave.startDate} - {entry.sickLeave.endDate} </p>)}
+                            (<p> <b>Sick leave:</b> {entry.sickLeave?.startDate} - {entry.sickLeave?.endDate} </p>)}
                             </div>
                             <ul>
                             {entry.diagnosisCodes?.map(code => {
