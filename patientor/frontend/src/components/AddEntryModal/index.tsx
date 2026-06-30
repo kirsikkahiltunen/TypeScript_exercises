@@ -1,12 +1,12 @@
 import { Dialog, DialogTitle, DialogContent, Divider, Alert } from '@mui/material';
 
 import EntryForm from "./EntryForm";
-import { Entry } from "../../types";
+import { NewEntry } from "../../types";
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  onSubmit: (values: Entry) => void;
+  onSubmit: (values: NewEntry) => void;
   error?: string;
 }
 
