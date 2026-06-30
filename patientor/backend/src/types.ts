@@ -70,7 +70,8 @@ type SickLeave = typeof SickLeave[keyof typeof SickLeave];
 interface OccupationalHealthcareEntry extends BaseEntry{
     type: "OccupationalHealthcare";
     description: string;
-    sickLeave: SickLeave;
+    employerName: string;
+    sickLeave?: SickLeave;
 }
 
 const HealthCheckRating = {
