@@ -52,9 +52,9 @@ export const NewPatientSchema = z.object({
 const Discharge = {
     date: string,
     criteria: string
-}
+};
 
-type Discharge = typeof Discharge[keyof typeof Discharge]
+type Discharge = typeof Discharge[keyof typeof Discharge];
 
 interface HospitalEntry extends BaseEntry {
     type: "Hospital";
@@ -65,9 +65,9 @@ interface HospitalEntry extends BaseEntry {
 const SickLeave = {
     startDate: string,
     endDate: string
-}
+};
 
-type SickLeave = typeof SickLeave[keyof typeof SickLeave]
+type SickLeave = typeof SickLeave[keyof typeof SickLeave];
 
 interface OccupationalHealthcareEntry extends BaseEntry{
     type: "OccupationalHealthcare";
