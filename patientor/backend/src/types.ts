@@ -62,7 +62,6 @@ const SickLeaveSchema = z.object({
 type SickLeave = z.infer<typeof SickLeaveSchema>;
 
 export const NewHospitalEntrySchema = z.object({
-    id: z.string(),
     description: z.string(),
     date: z.string(),
     specialist: z.string(),
@@ -77,7 +76,6 @@ interface HospitalEntry extends BaseEntry {
 }
 
 export const NewOccupationalHealthcareEntrySchema = z.object({
-    id: z.string(),
     description: z.string(),
     date: z.string(),
     specialist: z.string(),
@@ -110,7 +108,6 @@ const HealthCheckRatingSchema = z.union([
 type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 export const NewHealthCheckEntrySchema = z.object({
-    id: z.string(),
     description: z.string(),
     date: z.string(),
     specialist: z.string(),
