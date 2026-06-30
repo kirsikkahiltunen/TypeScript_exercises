@@ -5,11 +5,9 @@ export interface Diagnosis{
     name: string;
     latin?: string;
 }
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Entry{
-}
 
-export type Entry =  | HospitalEntry | OccupationalHealthcareEntry;
+
+export type Entry =  | HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
 interface BaseEntry {
   id: string;
@@ -73,4 +71,18 @@ interface OccupationalHealthcareEntry extends BaseEntry{
     type: "OccupationalHealthcare";
     description: string;
     sickLeave: SickLeave;
+}
+
+const HealthCheckRating = {
+  Healthy: 0,
+  LowRisk: 1,
+  HighRisk: 2,
+  CriticalRisk: 3,
+} as const;
+
+type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
+
+interface HealthCheckEntry extends BaseEntry {
+  type: "HealthCheck";
+  healthCheckRating: HealthCheckRating;
 }
